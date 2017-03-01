@@ -4,7 +4,7 @@
   "description": "playground",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node --harmony_async_await app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,7 +19,7 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/Starfeeling/koa2_playground#readme",
   "dependencies": {
-    "koa-router": "^5.4.0",
-    "koa2": "^2.0.0-alpha.7"
+    "koa": "^2.0.1",
+    "koa-router": "^5.4.0"
   }
 }
