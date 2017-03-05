@@ -19,6 +19,7 @@
   "license": "MIT",
   "homepage": "https://bitbucket.org/Starfeeling/koa2_playground#readme",
   "dependencies": {
+    "fs": "^0.0.1-security",
     "koa": "^2.0.1",
     "koa-router": "^5.4.0"
   }

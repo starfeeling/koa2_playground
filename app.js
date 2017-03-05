@@ -2,7 +2,7 @@ const Koa = require('koa')
 const app = new Koa()
 const router = require('./routers/index')
 
-app.use(router.routes()).use(router.allowedMethods())
+router.routes().use(router.allowedMethods())
 
 app.use(async(ctx, next) => {
     const start = new Date();
