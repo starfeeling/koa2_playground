@@ -7,13 +7,44 @@
 let app = require('../app');
 let debug = require('debug')('demo:server');
 let http = require('http');
+let config = require('../config');
+
+console.log('process.env.NODE_ENV=' + process.env.NODE_ENV);
+
+
+let fs = require('fs');
+let logConfig = require('../config/log_config');
 
 /**
- * Get port from environment and store in Express.
+ * check path
  */
+let confirmPath = function(pathStr) {
+  if (!fs.existsSync(pathStr)) {
+    fs.mkdirSync(pathStr);
+    console.log('createPath: ' + pathStr);
+  }
+};
 
-let port = normalizePort(process.env.PORT || '3001');
-// app.set('port', port);
+/**
+ * init log path
+ */
+let initLogPath = function() {
+  if (logConfig.baseLogPath) {
+    confirmPath(logConfig.baseLogPath);
+
+    for (let i = 0, len = logConfig.appenders.length; i < len; i++) {
+      if (logConfig.appenders[i].path) {
+        confirmPath(logConfig.baseLogPath + logConfig.appenders[i].path);
+      }
+    }
+  }
+};
+
+initLogPath();
+
+
+let port = normalizePort(config.port || '3000');
+console.log('port = ' + config.port);
 
 /**
  * Create HTTP server.
