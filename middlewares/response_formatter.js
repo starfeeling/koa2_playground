@@ -26,7 +26,7 @@ let url_filter = (pattern) => {
 
             if (error instanceof ApiError && reg.test(ctx.originalUrl)) {
 
-                ctx.status = 200;
+                ctx.status = error.code;
                 ctx.body = {
                     code: error.code,
                     message: error.message
