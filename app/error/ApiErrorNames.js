@@ -5,8 +5,8 @@ ApiErrorNames.USER_NOT_EXIST = "userNotExist";
 
 const error_map = new Map();
 
-error_map.set(ApiErrorNames.UNKNOW_ERROR, { code: -1, message: 'unknow error' });
-error_map.set(ApiErrorNames.USER_NOT_EXIST, { code: 101, message: 'user not exist' });
+error_map.set(ApiErrorNames.UNKNOW_ERROR, { code: 500, message: 'unknow error' });
+error_map.set(ApiErrorNames.USER_NOT_EXIST, { code: 404, message: 'user not exist' });
 
 ApiErrorNames.getErrorInfo = (error_name) => {
 
