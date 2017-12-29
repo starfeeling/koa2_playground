@@ -52,9 +52,9 @@ router.use('/api', api.routes(), api.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
 // response
-app.on('error', function (err, ctx) {
-	console.log(err)
-	logger.error('server error', err, ctx);
+app.on('error', async (err, ctx) => {
+	console.log(err);
+	logUtil.logError(ctx, err, '0');
 });
 
 
