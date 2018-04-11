@@ -14,6 +14,8 @@ const responseFormatter = require('./middlewares/response_formatter')
 
 const app = new Koa()
 // middlewares
+const _use = app.use
+app.use = (x) => { return _use.call(app, convert(x)) }
 app.use(convert(bodyparser))
 app.use(convert(json()))
 app.use(convert(logger()))
