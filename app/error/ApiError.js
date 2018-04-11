@@ -1,16 +1,15 @@
-const ApiErrorNames = require('./ApiErrorNames');
+const ApiErrorNames = require('./ApiErrorNames')
 
-class ApiError extends Error{
-    constructor(error_name){
-        super();
-    
-        let error_info = ApiErrorNames.getErrorInfo(error_name);
+class ApiError extends Error {
+	constructor(errorName) {
+		super()
 
-        this.name = error_name;
-        this.code = error_info.code;
-        this.message = error_info.message;
-    }
+		const errorInfo = ApiErrorNames.getErrorInfo(errorName)
+
+		this.name = errorName
+		this.code = errorInfo.code
+		this.message = errorInfo.message
+	}
 }
 
-
-module.exports = ApiError;
+module.exports = ApiError

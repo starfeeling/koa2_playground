@@ -4,80 +4,85 @@
  * Module dependencies.
  */
 
-let app = require('../app');
-let debug = require('debug')('demo:server');
-let http = require('http');
-let config = require('../config');
+const app = require('../app')
+const debug = require('debug')('demo:server')
+const http = require('http')
+const config = require('../config')
 
-console.log('process.env.NODE_ENV=' + process.env.NODE_ENV);
+console.log(`process.env.NODE_ENV=${process.env.NODE_ENV}`)
 
 
-let fs = require('fs');
-let logConfig = require('../config/log_config');
+const fs = require('fs')
+const logConfig = require('../config/log_config')
 
 /**
  * check path
  */
-let confirmPath = function(pathStr) {
-  if (!fs.existsSync(pathStr)) {
-    fs.mkdirSync(pathStr);
-    console.log('createPath: ' + pathStr);
-  }
-};
+const confirmPath = (pathStr) => {
+	if (!fs.existsSync(pathStr)) {
+		fs.mkdirSync(pathStr)
+		console.log(`createPath: ${pathStr}`)
+	}
+}
 
 /**
  * init log path
  */
-let initLogPath = function() {
-  if (logConfig.baseLogPath) {
-    confirmPath(logConfig.baseLogPath);
+const initLogPath = () => {
+	if (logConfig.baseLogPath) {
+		confirmPath(logConfig.baseLogPath)
 
-    for (let i = 0, len = logConfig.appenders.length; i < len; i++) {
-      if (logConfig.appenders[i].path) {
-        confirmPath(logConfig.baseLogPath + logConfig.appenders[i].path);
-      }
-    }
-  }
-};
+		logConfig.appenders.forEach((logConfigAppenders) => {
+			if (logConfigAppenders.path) {
+				confirmPath(logConfig.baseLogPath + logConfigAppenders.path)
+			}
+		})
+	}
+}
 
-initLogPath();
+initLogPath()
 
+/**
+ * Normalize a port into a number, string, or false.
+ * @param {number} port
+ * @param {number} val
+ */
 
-let port = normalizePort(config.port || '3000');
-console.log('port = ' + config.port);
+function normalizePort(val) {
+	const port = parseInt(val, 10)
+
+	if (typeof port === 'number') {
+		// named pipe
+		return val
+	}
+
+	if (port >= 0) {
+		// port number
+		return port
+	}
+
+	return false
+}
+
+const port = normalizePort(config.port || '3000')
+console.log(`port = ${config.port}`)
 
 /**
  * Create HTTP server.
  */
 
-let server = http.createServer(app.callback());
+const server = http.createServer(app.callback())
 
 /**
- * Listen on provided port, on all network interfaces.
+ * Event listener for HTTP server "listening" event.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-  let port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
+function onListening() {
+	const addr = server.address()
+	const bind = typeof addr === 'string'
+		? `pipe ${addr}`
+		: `port ${addr.port}`
+	debug(`Listening on ${bind}`)
 }
 
 /**
@@ -85,37 +90,34 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+	if (error.syscall !== 'listen') {
+		throw error
+	}
 
-  let bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+	const bind = typeof port === 'string'
+		? `Pipe ${port}`
+		: `Port ${port}`
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+	// handle specific listen errors with friendly messages
+	switch (error.code) {
+	case 'EACCES':
+		console.error(`${bind} requires elevated privileges`)
+		process.exit(1)
+		break
+	case 'EADDRINUSE':
+		console.error(`${bind} is already in use`)
+		process.exit(1)
+		break
+	default:
+		throw error
+	}
 }
 
 /**
- * Event listener for HTTP server "listening" event.
+ * Listen on provided port, on all network interfaces.
  */
 
-function onListening() {
-  let addr = server.address();
-  let bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
+server.listen(port)
+server.on('error', onError)
+server.on('listening', onListening)
+
