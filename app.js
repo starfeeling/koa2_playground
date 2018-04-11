@@ -16,9 +16,9 @@ const app = new Koa()
 // middlewares
 const _use = app.use
 app.use = (x) => { return _use.call(app, convert(x)) }
-app.use(convert(bodyparser))
-app.use(convert(json()))
-app.use(convert(logger()))
+app.use(bodyparser)
+app.use(json())
+app.use(logger())
 app.use(require('koa-static')(`${__dirname}/public`))
 
 
