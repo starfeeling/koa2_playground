@@ -17,5 +17,5 @@ https://hub.docker.com/r/starfeeling/koa2_docker/
 docker pull starfeeling/koa2_docker
 ```
 ```shell
-docker run starfeeling/koa2_docker
+docker run -p 3000:3000 starfeeling/koa2_docker
 ```
