@@ -2,7 +2,6 @@
 # yarn start
 
 > http://localhost:3000
-
 ```
 Hello World
 ```
@@ -18,4 +17,9 @@ docker pull starfeeling/koa2_docker
 ```
 ```shell
 docker run -p 3000:3000 starfeeling/koa2_docker
+```
+
+> http://localhost:3000
+```
+Hello World
 ```
