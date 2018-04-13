@@ -1,12 +1,11 @@
 FROM node:8 as build
-WORKDIR /root/koa2_docker
+WORKDIR /app
 
-COPY package*.json ./
+COPY . ./
 RUN npm install
-
 FROM node:8-alpine
-COPY --from=build /root/koa2_docker /
 
+COPY --from=build /app /
 EXPOSE 3000
 
 CMD [ "npm", "start" ]
